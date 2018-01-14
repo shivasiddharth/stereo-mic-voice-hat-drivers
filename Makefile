@@ -4,9 +4,11 @@ SRC := $(shell pwd)
 all: devicetree
 	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules
 
-modules_install: devicetree
-	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
+install: devicetree
 	cp hifimems-soundcard.dtbo /boot/overlays/
+	cp hifimems-codec.ko /lib/modules/$(shell uname -r)
+	cp hifimems-soundcard.ko /lib/modules/$(shell uname -r)
+	depmod -a
 
 clean: clean-local
 	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) clean
