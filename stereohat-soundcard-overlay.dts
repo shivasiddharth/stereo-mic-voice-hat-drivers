@@ -15,9 +15,9 @@
 	fragment@2 {
 		target-path = "/";
 		__overlay__ {
-			hifimems-codec {
+			stereohat-codec {
 				#sound-dai-cells = <0>;
-				compatible = "hifimems,hifimems";
+				compatible = "stereohat,stereohat";
 				status = "okay";
 			};
 		};
@@ -26,7 +26,7 @@
 	fragment@3 {
 		target = <&sound>;
 		__overlay__ {
-			compatible = "hifimems,hifimems-soundcard";
+			compatible = "stereohat,stereohat-soundcard";
 			i2s-controller = <&i2s>;
 			status = "okay";
 		};

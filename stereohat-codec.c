@@ -29,39 +29,39 @@
 #include <sound/soc-dai.h>
 #include <sound/soc-dapm.h>
 
-static int hifimems_codec_probe(struct snd_soc_codec *codec) {
+static int stereohat_codec_probe(struct snd_soc_codec *codec) {
   return 0;
 }
 
-static int hifimems_codec_remove(struct snd_soc_codec *codec) {
+static int stereohat_codec_remove(struct snd_soc_codec *codec) {
   return 0;
 }
 
-static const struct snd_soc_dapm_widget hifimems_dapm_widgets[] = {
+static const struct snd_soc_dapm_widget stereohat_dapm_widgets[] = {
     SND_SOC_DAPM_OUTPUT("Speaker"),
 };
 
-static const struct snd_soc_dapm_route hifimems_dapm_routes[] = {
+static const struct snd_soc_dapm_route stereohat_dapm_routes[] = {
     {"Speaker", NULL, "Playback"},
 };
 
-static struct snd_soc_codec_driver hifimems_codec_driver = {
-    .probe = hifimems_codec_probe,
-    .remove = hifimems_codec_remove,
+static struct snd_soc_codec_driver stereohat_codec_driver = {
+    .probe = stereohat_codec_probe,
+    .remove = stereohat_codec_remove,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
     .component_driver = {
 #endif
-    .dapm_widgets = hifimems_dapm_widgets,
-    .num_dapm_widgets = ARRAY_SIZE(hifimems_dapm_widgets),
-    .dapm_routes = hifimems_dapm_routes,
-    .num_dapm_routes = ARRAY_SIZE(hifimems_dapm_routes),
+    .dapm_widgets = stereohat_dapm_widgets,
+    .num_dapm_widgets = ARRAY_SIZE(stereohat_dapm_widgets),
+    .dapm_routes = stereohat_dapm_routes,
+    .num_dapm_routes = ARRAY_SIZE(stereohat_dapm_routes),
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
     },
 #endif
 };
 
-static struct snd_soc_dai_driver hifimems_dai = {
-    .name = "hifimems-hifi",
+static struct snd_soc_dai_driver stereohat_dai = {
+    .name = "stereo-audio-hat",
     .capture = {.stream_name = "Capture",
                 .channels_min = 2,
                 .channels_max = 2,
@@ -75,33 +75,33 @@ static struct snd_soc_dai_driver hifimems_dai = {
     .symmetric_rates = 1};
 
 #ifdef CONFIG_OF
-static const struct of_device_id hifimems_ids[] = {
+static const struct of_device_id stereohat_ids[] = {
     {
-        .compatible = "hifimems,hifimems",
+        .compatible = "stereohat,stereohat",
     },
     {}};
-MODULE_DEVICE_TABLE(of, hifimems_ids);
+MODULE_DEVICE_TABLE(of, stereohat_ids);
 #endif
 
-static int hifimems_platform_probe(struct platform_device *pdev) {
-  return snd_soc_register_codec(&pdev->dev, &hifimems_codec_driver, &hifimems_dai, 1);
+static int stereohat_platform_probe(struct platform_device *pdev) {
+  return snd_soc_register_codec(&pdev->dev, &stereohat_codec_driver, &stereohat_dai, 1);
 }
 
-static int hifimems_platform_remove(struct platform_device *pdev) {
+static int stereohat_platform_remove(struct platform_device *pdev) {
   snd_soc_unregister_codec(&pdev->dev);
   return 0;
 }
 
-static struct platform_driver hifimems_driver = {
+static struct platform_driver stereohat_driver = {
     .driver =
         {
-            .name = "hifimems-codec", .of_match_table = of_match_ptr(hifimems_ids),
+            .name = "stereohat-codec", .of_match_table = of_match_ptr(stereohat_ids),
         },
-    .probe = hifimems_platform_probe,
-    .remove = hifimems_platform_remove,
+    .probe = stereohat_platform_probe,
+    .remove = stereohat_platform_remove,
 };
 
-module_platform_driver(hifimems_driver);
+module_platform_driver(stereohat_driver);
 
 MODULE_DESCRIPTION("Simple I2S Hifiberry & ICS43432 MEMS Codec");
 MODULE_AUTHOR("Greg Miell <greg@gothack.ninja>");

@@ -1,24 +1,20 @@
-# AoSC Driver Simple I2S Hifiberry and ICS43432 MEMS
+# AoSC Simple Driver for I2S Mic and Amp
 
-> Use Hifiberry-dac and ICS43432 simultaneously
-
-Tested with:
- - [Adafruit I2S MEMS Microphone Breakout](https://www.adafruit.com/product/3421) and [Pimoroni Speaker PHAT for Raspberry Pi Zero](https://www.adafruit.com/product/3401)
- - [Adafruit I2S MEMS Microphone Breakout](https://www.adafruit.com/product/3421) and [Adafruit I2S 3W Class D Amplifier Breakout](https://www.adafruit.com/product/3006)
+> Use I2S DAC Amp and ICS43432 simultaneously
 
 Based on googlevoicehat-{codec,soundcard}.c by Peter Malkin.
 
 ## Install
 
-This was installed successfully on Linux 4.9.59+ on a Raspberry Pi Zero W
+This was tested successfully on Linux 4.9.59+
 
 ```sh
 sudo apt-get update
 sudo apt-get dist-upgrade
 sudo apt-get install raspberrypi-kernel-headers
 
-git clone https://github.com/Sarev0k/hifimems-kmod
-cd hifimems-kmod
+git clone https://github.com/shivasiddharth/stereo-voice-hat-drivers
+cd stereohat-kmod
 
 make KERNEL_SRC=/lib/modules/$(uname -r)/build all
 sudo make KERNEL_SRC=/lib/modules/$(uname -r)/build install
@@ -28,7 +24,7 @@ sudo make KERNEL_SRC=/lib/modules/$(uname -r)/build install
 ```sh
 sudo sed -i "/^#dtparam=i2s=on$/ s|#||" /boot/config.txt
 sudo sed -i "/^dtparam=audio=on$/ s|^|#|" /boot/config.txt
-echo "dtoverlay=hifimems-soundcard" | sudo tee -a /boot/config.txt
+echo "dtoverlay=stereohat-soundcard" | sudo tee -a /boot/config.txt
 ```
 
 ## Audio Config Setup

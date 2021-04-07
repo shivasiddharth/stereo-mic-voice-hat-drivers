@@ -24,12 +24,12 @@
 #include <sound/soc.h>
 #include <sound/jack.h>
 
-static int snd_rpi_hifimems_soundcard_init(struct snd_soc_pcm_runtime *rtd)
+static int snd_rpi_stereohat_soundcard_init(struct snd_soc_pcm_runtime *rtd)
 {
 	return 0;
 }
 
-static int snd_rpi_hifimems_soundcard_hw_params(
+static int snd_rpi_stereohat_soundcard_hw_params(
 	struct snd_pcm_substream *substream,
 	struct snd_pcm_hw_params *params)
 {
@@ -43,42 +43,42 @@ static int snd_rpi_hifimems_soundcard_hw_params(
 }
 
 /* machine stream operations */
-static struct snd_soc_ops snd_rpi_hifimems_soundcard_ops = {
-	.hw_params = snd_rpi_hifimems_soundcard_hw_params,
+static struct snd_soc_ops snd_rpi_stereohat_soundcard_ops = {
+	.hw_params = snd_rpi_stereohat_soundcard_hw_params,
 };
 
-static struct snd_soc_dai_link snd_rpi_hifimems_soundcard_dai[] = {
+static struct snd_soc_dai_link snd_rpi_stereohat_soundcard_dai[] = {
 {
 	.name		= "I2S Hifiberry & ICS43432",
 	.stream_name	= "I2S Hifiberry & ICS43432 Audio",
 	.cpu_dai_name	= "bcm2708-i2s.0",
-	.codec_dai_name	= "hifimems-hifi",
+	.codec_dai_name	= "stereo-audio-hat",
 	.platform_name	= "bcm2708-i2s.0",
-	.codec_name	= "hifimems-codec",
+	.codec_name	= "stereohat-codec",
 	.dai_fmt	= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
 				SND_SOC_DAIFMT_CBS_CFS,
-	.ops		= &snd_rpi_hifimems_soundcard_ops,
-	.init		= snd_rpi_hifimems_soundcard_init,
+	.ops		= &snd_rpi_stereohat_soundcard_ops,
+	.init		= snd_rpi_stereohat_soundcard_init,
 },
 };
 
 /* audio machine driver */
-static struct snd_soc_card snd_rpi_hifimems_soundcard = {
-	.name         = "snd_rpi_hifimems_soundcard",
+static struct snd_soc_card snd_rpi_stereohat_soundcard = {
+	.name         = "snd_rpi_stereohat_soundcard",
 	.owner        = THIS_MODULE,
-	.dai_link     = snd_rpi_hifimems_soundcard_dai,
-	.num_links    = ARRAY_SIZE(snd_rpi_hifimems_soundcard_dai),
+	.dai_link     = snd_rpi_stereohat_soundcard_dai,
+	.num_links    = ARRAY_SIZE(snd_rpi_stereohat_soundcard_dai),
 };
 
-static int snd_rpi_hifimems_soundcard_probe(struct platform_device *pdev)
+static int snd_rpi_stereohat_soundcard_probe(struct platform_device *pdev)
 {
 	int ret = 0;
 
-	snd_rpi_hifimems_soundcard.dev = &pdev->dev;
+	snd_rpi_stereohat_soundcard.dev = &pdev->dev;
 
 	if (pdev->dev.of_node) {
 		struct device_node *i2s_node;
-		struct snd_soc_dai_link *dai = &snd_rpi_hifimems_soundcard_dai[0];
+		struct snd_soc_dai_link *dai = &snd_rpi_stereohat_soundcard_dai[0];
 		i2s_node = of_parse_phandle(pdev->dev.of_node,
 					"i2s-controller", 0);
 
@@ -90,35 +90,35 @@ static int snd_rpi_hifimems_soundcard_probe(struct platform_device *pdev)
 		}
 	}
 
-	ret = snd_soc_register_card(&snd_rpi_hifimems_soundcard);
+	ret = snd_soc_register_card(&snd_rpi_stereohat_soundcard);
 	if (ret)
 		dev_err(&pdev->dev, "snd_soc_register_card() failed: %d\n", ret);
 
 	return ret;
 }
 
-static int snd_rpi_hifimems_soundcard_remove(struct platform_device *pdev)
+static int snd_rpi_stereohat_soundcard_remove(struct platform_device *pdev)
 {
-	return snd_soc_unregister_card(&snd_rpi_hifimems_soundcard);
+	return snd_soc_unregister_card(&snd_rpi_stereohat_soundcard);
 }
 
-static const struct of_device_id snd_rpi_hifimems_soundcard_of_match[] = {
-	{ .compatible = "hifimems,hifimems-soundcard", },
+static const struct of_device_id snd_rpi_stereohat_soundcard_of_match[] = {
+	{ .compatible = "stereohat,stereohat-soundcard", },
 	{},
 };
-MODULE_DEVICE_TABLE(of, snd_rpi_hifimems_soundcard_of_match);
+MODULE_DEVICE_TABLE(of, snd_rpi_stereohat_soundcard_of_match);
 
-static struct platform_driver snd_rpi_hifimems_soundcard_driver = {
+static struct platform_driver snd_rpi_stereohat_soundcard_driver = {
 	.driver = {
-		.name   = "snd-hifimems-soundcard",
+		.name   = "snd-stereohat-soundcard",
 		.owner  = THIS_MODULE,
-		.of_match_table = snd_rpi_hifimems_soundcard_of_match,
+		.of_match_table = snd_rpi_stereohat_soundcard_of_match,
 	},
-	.probe          = snd_rpi_hifimems_soundcard_probe,
-	.remove         = snd_rpi_hifimems_soundcard_remove,
+	.probe          = snd_rpi_stereohat_soundcard_probe,
+	.remove         = snd_rpi_stereohat_soundcard_remove,
 };
 
-module_platform_driver(snd_rpi_hifimems_soundcard_driver);
+module_platform_driver(snd_rpi_stereohat_soundcard_driver);
 
 MODULE_DESCRIPTION("AoSC Driver Simple I2S Hifiberry and ICS43432 MEMS");
 MODULE_AUTHOR("Greg Miell <greg@gothack.ninja>");
