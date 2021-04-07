@@ -14,7 +14,7 @@ sudo apt-get dist-upgrade
 sudo apt-get install raspberrypi-kernel-headers
 
 git clone https://github.com/shivasiddharth/stereo-voice-hat-driver   
-cd stereohat-kmod
+cd stereo-voice-hat-driver 
 
 make KERNEL_SRC=/lib/modules/$(uname -r)/build all
 sudo make KERNEL_SRC=/lib/modules/$(uname -r)/build install
