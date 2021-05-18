@@ -6,7 +6,7 @@ Based on googlevoicehat-{codec,soundcard}.c by Peter Malkin.
 
 ## Install
 
-This was tested successfully on Linux 4.9.59+
+This was tested successfully on Linux 4.14+
 
 ```sh
 sudo apt-get update
